@@ -1,0 +1,33 @@
+.content {
+  border-radius: 10px;
+  border: 2px solid black;
+  width: 50%;
+  margin: 0 auto;
+
+  .header {
+    border-bottom: 3px solid black;
+    ul {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 0px;
+      li {
+        list-style: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        letter-spacing: 5px;
+        cursor: pointer;
+        transition: 0.5s ease-out;
+      }
+      .active {
+        background-color: #1976d2;
+        color: #fff;
+      }
+    }
+  }
+  .root {
+    width: 400px;
+    padding: 50px;
+    margin: 50px auto;
+  }
+}

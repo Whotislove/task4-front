@@ -1,0 +1,64 @@
+.about {
+  text-align: right;
+  margin-bottom: 40px;
+  span {
+    margin-right: 20px;
+  }
+  button {
+    background-color: #1976d2;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 20px 0px;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      color: aliceblue;
+      background-color: purple;
+      transition: 0.5s ease;
+    }
+    &:active {
+      transform: scale(0.8, 0.8);
+    }
+  }
+}
+
+.content {
+  border-radius: 10px;
+  border: 2px solid black;
+  width: 50%;
+  margin: 0 auto;
+  .toolbar {
+    display: flex;
+    justify-content: space-around;
+    button {
+      background-color: #1976d2;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin: 20px 0px;
+      border: none;
+      cursor: pointer;
+      &:hover {
+        color: aliceblue;
+        background-color: purple;
+        transition: 0.5s ease;
+      }
+      &:active {
+        transform: scale(0.8, 0.8);
+      }
+    }
+  }
+  table {
+    width: 100%;
+    border-spacing: 20px;
+    tr {
+      .checkbox {
+        display: flex;
+        flex-direction: column;
+      }
+      th {
+        border-bottom: 1px solid black;
+        text-align: center;
+      }
+    }
+  }
+}
