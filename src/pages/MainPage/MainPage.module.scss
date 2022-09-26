@@ -53,7 +53,11 @@
     tr {
       .checkbox {
         display: flex;
-        flex-direction: column;
+        flex-direction: row-reverse;
+        justify-content: center;
+        input {
+          margin-right: 10px;
+        }
       }
       th {
         border-bottom: 1px solid black;
