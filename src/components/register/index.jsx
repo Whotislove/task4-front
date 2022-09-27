@@ -64,7 +64,7 @@ const Register = () => {
           className={styles.field}
         />
         <Button disabled={!isValid} size="large" variant="contained" type="submit">
-          Зарегистрироваться
+          Create profile
         </Button>
       </form>
     </>

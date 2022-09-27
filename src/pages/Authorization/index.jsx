@@ -4,7 +4,7 @@ import Register from '../../components/register';
 import styles from './Autorization.module.scss';
 const Autorization = () => {
   const [choice, setChoice] = React.useState(0);
-  const auth = ['Register', 'LogIn'];
+  const auth = ['Sign Up', 'Sign In'];
   const onClickHeader = (i) => {
     setChoice(i);
   };

@@ -55,7 +55,7 @@ const Login = () => {
           {...register('password', { required: 'Укажите пароль' })}
         />
         <Button disabled={!isValid} type="submit" size="large" variant="contained">
-          Войти
+          Log in
         </Button>
       </form>
     </>
