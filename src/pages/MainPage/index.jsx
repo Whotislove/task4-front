@@ -1,46 +1,89 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import style from './MainPage.module.scss';
 import axios from '../../axios';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { logOut } from '../../redux/slices/user';
-const checkArr = [];
-// for (let i = 0; i < arr.length; i++) {
-//   checkArr.push(false);
-// }
+import { addUsers } from '../../redux/slices/usersTable';
 const MainPage = () => {
+  const ref = React.useRef();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+  const { users } = useSelector((state) => state.userTable);
   const dispatch = useDispatch();
-  const [data, setData] = React.useState();
+
+  const [checkedState, setCheckedState] = React.useState([]);
+
   React.useEffect(() => {
     async function getData() {
       try {
-        const { data } = await axios.get('/users');
-        setData(data);
+        const { data } = await axios.get('/users').catch((res) => {
+          alert(res.response.data.message);
+          navigate('/');
+        });
+        dispatch(addUsers(data));
+        setCheckedState(new Array(data.length).fill(false));
       } catch (error) {
-        alert('Не удалось получить пользователей');
+        console.log('Не удалось получить пользователей');
       }
     }
     getData();
   }, []);
-  const [checked, setChecked] = React.useState(checkArr);
-  const [checkedAll, setCheckedAll] = React.useState(false);
-  const onChangeSelect = () => {
-    let copy = Object.assign([], checked);
-    for (let i = 0; i < checked.length; i++) {
-      copy[i] = !checkedAll;
-    }
-    setChecked(copy);
-    setCheckedAll(!checkedAll);
-    console.log(checked);
-  };
-  if (!data) {
+  if (users.length === 0 && checkedState.length === 0) {
     return <>Загрузка...</>;
   }
+  const handleOnChange = (id) => {
+    const updateCheckedState = checkedState.map((item, index) => {
+      return index === id ? !item : item;
+    });
+    setCheckedState(updateCheckedState);
+  };
 
   const onClickLogOut = () => {
     dispatch(logOut());
     window.localStorage.removeItem('token');
+  };
+  const onClickSelectAll = () => {
+    const updateCheckedState = checkedState.map((item) => {
+      return (item = ref.current.checked);
+    });
+    setCheckedState(updateCheckedState);
+  };
+  const block = () => {
+    checkedState.map((e, i) => {
+      if (e === true) {
+        axios.patch(`http://localhost:4444/users/${users[i]._id}`, { status: 'block' });
+        setTimeout(() => {
+          dispatch(logOut());
+          window.localStorage.removeItem('token');
+          navigate('/');
+        });
+      }
+    });
+  };
+  const unblock = () => {
+    checkedState.map((e, i) => {
+      if (e === true) {
+        axios.patch(`http://localhost:4444/users/${users[i]._id}`, { status: 'active' });
+        setTimeout(() => {
+          dispatch(logOut());
+          window.localStorage.removeItem('token');
+          navigate('/');
+        });
+      }
+    });
+  };
+  const deleteUser = () => {
+    checkedState.map((e, i) => {
+      if (e === true) {
+        axios.delete(`http://localhost:4444/users/${users[i]._id}`);
+        setTimeout(() => {
+          dispatch(logOut());
+          window.localStorage.removeItem('token');
+          navigate('/');
+        });
+      }
+    });
   };
   return (
     <>
@@ -52,9 +95,9 @@ const MainPage = () => {
       </div>
       <div className={style.content}>
         <div className={style.toolbar}>
-          <button>Block</button>
-          <button>Unblock</button>
-          <button>Delete</button>
+          <button onClick={() => block()}>Block</button>
+          <button onClick={() => unblock()}>Unblock</button>
+          <button onClick={() => deleteUser()}>Delete</button>
         </div>
         <table>
           <tbody>
@@ -62,33 +105,24 @@ const MainPage = () => {
               <th className={style.checkbox}>
                 Select all
                 <input
+                  ref={ref}
                   type="checkbox"
-                  checked={
-                    checkedAll ||
-                    checked.every((e) => {
-                      return e === true;
-                    })
-                  }
-                  onChange={() => onChangeSelect()}
+                  checked={checkedState.every((e) => e === true)}
+                  onChange={() => onClickSelectAll()}
                 />
               </th>
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
             </tr>
-            {data.map((val, id) => {
+            {users.map((val, id) => {
               return (
                 <tr key={id}>
                   <td>
                     <input
                       type="checkbox"
-                      checked={checked[id]}
-                      onChange={() => {
-                        let copy = Object.assign([], checked);
-                        copy[id] = !checked[id];
-                        setChecked(copy);
-                        console.log(data[id]._id);
-                      }}
+                      checked={checkedState[id]}
+                      onChange={() => handleOnChange(id)}
                     />
                   </td>
                   <td>{val.fullName}</td>
