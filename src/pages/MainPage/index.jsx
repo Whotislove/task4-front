@@ -52,7 +52,7 @@ const MainPage = () => {
   const block = () => {
     checkedState.map((e, i) => {
       if (e === true) {
-        axios.patch(`${process.env.REACT_APP_API_URL}/users/${users[i]._id}`, { status: 'block' });
+        axios.patch(`${process.env.REACT_APP_API_URL}users/${users[i]._id}`, { status: 'block' });
         setTimeout(() => {
           dispatch(logOut());
           window.localStorage.removeItem('token');
@@ -64,7 +64,7 @@ const MainPage = () => {
   const unblock = () => {
     checkedState.map((e, i) => {
       if (e === true) {
-        axios.patch(`${process.env.REACT_APP_API_URL}/users/${users[i]._id}`, { status: 'active' });
+        axios.patch(`${process.env.REACT_APP_API_URL}users/${users[i]._id}`, { status: 'active' });
         setTimeout(() => {
           dispatch(logOut());
           window.localStorage.removeItem('token');
@@ -76,7 +76,7 @@ const MainPage = () => {
   const deleteUser = () => {
     checkedState.map((e, i) => {
       if (e === true) {
-        axios.delete(`${process.env.REACT_APP_API_URL}/users/${users[i]._id}`);
+        axios.delete(`${process.env.REACT_APP_API_URL}users/${users[i]._id}`);
         setTimeout(() => {
           dispatch(logOut());
           window.localStorage.removeItem('token');
