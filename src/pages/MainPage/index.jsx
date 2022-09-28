@@ -54,9 +54,11 @@ const MainPage = () => {
       if (e === true) {
         axios.patch(`${process.env.REACT_APP_API_URL}users/${users[i]._id}`, { status: 'block' });
         setTimeout(() => {
-          dispatch(logOut());
-          window.localStorage.removeItem('token');
-          navigate('/');
+          const { data } = await axios.get('/users').catch((res) => {
+            alert(res.response.data.message);
+            navigate('/');
+          });
+          dispatch(addUsers(data));
         });
       }
     });
